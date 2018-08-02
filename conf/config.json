@@ -1,0 +1,1 @@
+{"Logger":"logger","CA":[{"IP":"127.0.0.1","Port":"121","ProxyPort":"21","Name":"YesSign"},{"IP":"127.0.0.12","Port":"123","ProxyPort":"22","Name":"KSign"}],"Thread":100}
