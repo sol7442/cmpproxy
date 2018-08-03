@@ -13,7 +13,22 @@
     </encoder>
   </appender>
   
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+      <layout class="ch.qos.logback.classic.PatternLayout">
+        <pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5p] [%F]%M\(%L\) : %m%n</pattern>
+      </layout>
+  </appender>
+    
   <root level="debug">
-    <appender-ref ref="FILE" />
+  	<if condition='property("logback.appenders").contains("CONSOLE")'>
+  		<then>
+  	  		<appender-ref ref="CONSOLE" />
+  	  	</then>	
+  	</if>
+  	<if condition='property("logback.appenders").contains("FILE")'>
+  		<then>
+  			<appender-ref ref="FILE" />
+  		</then>
+  	</if>
   </root>
 </configuration>
