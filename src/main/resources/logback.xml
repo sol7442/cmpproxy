@@ -24,11 +24,9 @@
   		<then>
   	  		<appender-ref ref="CONSOLE" />
   	  	</then>	
-  	</if>
-  	<if condition='property("logback.appenders").contains("FILE")'>
-  		<then>
+  	  	<else>
   			<appender-ref ref="FILE" />
-  		</then>
+  		</else>
   	</if>
   </root>
 </configuration>

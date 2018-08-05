@@ -1,18 +1,61 @@
 apply plugin: 'java-library'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
 
+project.ext.baseName   = 'INISAFE'
+project.ext.appendix   = 'Proxy'
+project.version    = '1.0.0'
+project.ext.classifier = 'beta'
 
 repositories {
     jcenter()
 }
 
+
+task copyRuntimeLibs(type: Copy,group:'Build Setup') {
+    into "$buildDir/libs/"
+    from configurations.runtime// - configurations.runtime
+}
+
+
+//[baseName]-[appendix]-[version]-[classifier].[extension]
+task jar_single(type:Jar, group:'Build', dependsOn: compileJava){
+	baseName   = project.baseName
+	appendix   = project.appendix
+	version    = project.version
+	classifier = project.classifier 
+	
+	manifest {
+		attributes 'Main-Class': 'com.initech.crossweb.proxy.ProxyDaemon'
+	}
+	with jar
+}
+task jar_all_in_one(type:Jar, group:'Build', dependsOn: compileJava){
+
+	baseName   = project.baseName
+	appendix   = project.appendix
+	version    = project.version
+	classifier = 'all-in-one' + '_' + project.classifier 
+	
+	manifest {
+		attributes 'Main-Class': 'com.initech.crossweb.proxy.ProxyDaemon'
+	}
+	
+	dependsOn configurations.runtime
+	from {
+		configurations.compile.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+	with jar
+}
+
 dependencies {
-	compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+	compile group: 'org.json', name: 'json', version: '20180130'
 	compile group: 'commons-daemon', name: 'commons-daemon', version: '1.1.0'
 	compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.8'
-	
 	compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+	
     testImplementation 'junit:junit:4.12'
 }
 

@@ -1,4 +1,4 @@
-package com.initech.crossweb.cmpproxy;
+package com.initech.crossweb.proxy;
 
 import java.util.Date;
 

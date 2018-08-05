@@ -1,4 +1,4 @@
-package com.initech.crossweb.cmpproxy;
+package com.initech.crossweb.proxy;
 
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
@@ -10,14 +10,25 @@ import org.apache.commons.daemon.support.DaemonLoader.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CmpProxyDaemon implements Daemon {
-    static final Logger logger = LoggerFactory.getLogger(CmpProxyDaemon.class);;
+import com.initech.crossweb.proxy.control.ControllerService;
 
-    private static final CmpProxyDaemon daemon = new CmpProxyDaemon();
+public class ProxyDaemon implements Daemon {
+    static final Logger logger = LoggerFactory.getLogger(ProxyDaemon.class);;
+
+    private static final ProxyDaemon daemon = new ProxyDaemon();
     private CmpProxyServer server = null;
+    
+    private ControllerService controller_service = null;
     
 	@Override
 	public void init(DaemonContext context) throws DaemonInitException, Exception {
+		// load config
+		
+		
+		
+		controller_service = new ControllerService();
+		
+		
 		server = new CmpProxyServer();
 		String[] args = context.getArguments();
 		for(int i=0; i<args.length;i++) {
@@ -31,6 +42,7 @@ public class CmpProxyDaemon implements Daemon {
 	@Override
 	public void start() throws Exception {
 		server.start();
+		controller_service.start();
 	}
 
 	@Override
@@ -68,7 +80,6 @@ public class CmpProxyDaemon implements Daemon {
     }
 	
 	public static void main(String[] args) {
-		
 		if(args == null || args.length == 0) {
 			String[] main_args = new String[3]; 
         	main_args[0] = "config.path";

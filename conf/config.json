@@ -1,1 +1,16 @@
-{"Logger":"logger","CA":[{"IP":"127.0.0.1","Port":"121","ProxyPort":"21","Name":"YesSign"},{"IP":"127.0.0.12","Port":"123","ProxyPort":"22","Name":"KSign"}],"Thread":100}
+{
+    "Targets": {
+        "KSign": {
+            "TargetPort": "123",
+            "TargetIP": "127.0.0.12",
+            "ProxyPort": "22"
+        },
+        "YesSign": {
+            "TargetPort": "121",
+            "TargetIP": "127.0.0.1",
+            "ProxyPort": "21"
+        }
+    },
+    "Logger": "logger",
+    "Thread": 100
+}
