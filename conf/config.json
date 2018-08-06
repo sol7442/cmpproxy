@@ -1,16 +1,28 @@
 {
-    "Targets": {
-        "KSign": {
-            "TargetPort": "123",
-            "TargetIP": "127.0.0.12",
-            "ProxyPort": "22"
-        },
-        "YesSign": {
-            "TargetPort": "121",
-            "TargetIP": "127.0.0.1",
-            "ProxyPort": "21"
-        }
+  "adminPort": 6100,
+  "echoPort": 6200,
+  "targets": {
+    "SignKorea": {
+      "targetIp": "127.0.0.1",
+      "targetPort": 6200,
+      "proxyPort": 6303
     },
-    "Logger": "logger",
-    "Thread": 100
+    "YesSign": {
+      "targetIp": "127.0.0.1",
+      "targetPort": 6200,
+      "proxyPort": 6302
+    },
+    "KSign": {
+      "targetIp": "127.0.0.1",
+      "targetPort": 6200,
+      "proxyPort": 6301
+    }
+    /*
+    "KSign": {
+      "targetIp": "127.0.0.1",
+      "targetPort": 5200,
+      "proxyPort": 5301
+    }
+    */
+  }
 }

@@ -1,8 +1,19 @@
 package com.initech.crossweb.proxy.control;
 
-import com.initech.crossweb.proxy.AbstractProxyService;
+import java.net.Socket;
 
-public class ControllerService extends AbstractProxyService{
+import com.initech.crossweb.proxy.AbstractService;
+import com.initech.crossweb.proxy.IWorker;
 
+public class ControllerService extends AbstractService{
 
+	public ControllerService() {
+		this.type = "Controller";
+		this.name = "Admin";
+	}
+
+	@Override
+	public void doWork(Socket socket) {
+		// TODO Auto-generated method stub
+	}
 }

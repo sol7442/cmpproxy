@@ -51,7 +51,9 @@ task jar_all_in_one(type:Jar, group:'Build', dependsOn: compileJava){
 }
 
 dependencies {
-	compile group: 'org.json', name: 'json', version: '20180130'
+	//compile group: 'org.json', name: 'json', version: '20180130'
+	//compile group: 'org.hjson', name: 'hjson', version: '3.0.0'
+	implementation 'com.google.code.gson:gson:2.8.5'
 	compile group: 'commons-daemon', name: 'commons-daemon', version: '1.1.0'
 	compile group: 'org.codehaus.janino', name: 'janino', version: '3.0.8'
 	compile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'

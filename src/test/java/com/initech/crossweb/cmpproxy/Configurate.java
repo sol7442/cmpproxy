@@ -1,48 +1,49 @@
 package com.initech.crossweb.cmpproxy;
 
-import java.io.File;
+
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.junit.Test;
+
+import com.initech.crossweb.proxy.conf.Configuration;
+import com.initech.crossweb.proxy.conf.Target;
 
 public class Configurate {
 
-	@Test
+	
+	//@Test
 	public void make(){
 		
-		JSONObject config = new JSONObject();
-		//JSONArray list = new JSONArray();
+		Configuration config = new Configuration();
+		config.setAdminPort(5100);
+		config.setEchoPort(5200);
 		
-		config.put("Thread", 100);
-		config.put("Logger", "logger");
+		Target t_ksign = new Target();
+		t_ksign.setTargetIp("127.0.0.1");
+		t_ksign.setTargetPort(5200);//echo port
+		t_ksign.setProxyPort(5301);
 		
-		JSONObject ca1 = new JSONObject();
-		ca1.put("ProxyPort","21");
-		ca1.put("TargetIP","127.0.0.1");
-		ca1.put("TargetPort","121");
+		config.addTarget("KSign", t_ksign);
+		
+		Target t_yessign = new Target();
+		t_yessign.setTargetIp("127.0.0.1");
+		t_yessign.setTargetPort(5200);//echo port
+		t_yessign.setProxyPort(5302);
+		
+		config.addTarget("YesSign", t_yessign);
 		
 		
-		JSONObject ca2 = new JSONObject();
-		ca2.put("ProxyPort","22");
-		ca2.put("TargetIP","127.0.0.12");
-		ca2.put("TargetPort","123");
+		Target t_signkor = new Target();
+		t_signkor.setTargetIp("127.0.0.1");
+		t_signkor.setTargetPort(5200);//echo port
+		t_signkor.setProxyPort(5303);
 		
-		JSONObject ca_list = new JSONObject();
-		ca_list.put("KSign", ca2);
-		ca_list.put("YesSign", ca1);
-		config.put("Targets", ca_list);
-
+		config.addTarget("SignKorea", t_signkor);
+		
+		
 		try {
-			FileWriter writer = new FileWriter(new File("./conf/config.json"));
-			writer.write(config.toString(4));
-			writer.flush();
-			writer.close();
+			config.save("./conf/config.json");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -51,17 +52,17 @@ public class Configurate {
 	@Test
 	public void load(){
 		try {
-			FileReader reader = new FileReader("./conf/config.json");
-			JSONTokener  parser = new JSONTokener(reader);
-			JSONObject config = new JSONObject(parser);
-
-			System.out.println(config.toString(4));
+			
+//			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//			JsonReader reader = new JsonReader(new FileReader("./conf/config.json"));
+//			Configuration config = gson.fromJson(reader,Configuration.class);
+//			
+//			System.out.println(gson.toJson(config));
+			Configuration config = Configuration.load("./conf/config.json");
+			System.out.println(config);
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		} 
-        
 	}
 }

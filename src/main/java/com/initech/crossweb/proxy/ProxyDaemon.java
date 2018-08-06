@@ -1,53 +1,91 @@
 package com.initech.crossweb.proxy;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import org.apache.commons.daemon.Daemon;
 import org.apache.commons.daemon.DaemonContext;
-import org.apache.commons.daemon.DaemonController;
 import org.apache.commons.daemon.DaemonInitException;
-import org.apache.commons.daemon.support.DaemonLoader;
 import org.apache.commons.daemon.support.DaemonLoader.Context;
-import org.apache.commons.daemon.support.DaemonLoader.Controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.initech.crossweb.proxy.cmp.CmpProxyService;
+import com.initech.crossweb.proxy.conf.Configuration;
+import com.initech.crossweb.proxy.conf.Target;
 import com.initech.crossweb.proxy.control.ControllerService;
+import com.initech.crossweb.proxy.echo.EchoService;
 
 public class ProxyDaemon implements Daemon {
     static final Logger logger = LoggerFactory.getLogger(ProxyDaemon.class);;
 
     private static final ProxyDaemon daemon = new ProxyDaemon();
-    private CmpProxyServer server = null;
-    
-    private ControllerService controller_service = null;
+    private Configuration config;
+    private Set<AbstractService> services = new HashSet<AbstractService>();
+
     
 	@Override
 	public void init(DaemonContext context) throws DaemonInitException, Exception {
-		// load config
-		
-		
-		
-		controller_service = new ControllerService();
-		
-		
-		server = new CmpProxyServer();
 		String[] args = context.getArguments();
 		for(int i=0; i<args.length;i++) {
 			System.out.println(args[i]);
 		}
 		
+		this.config = Configuration.load(args[0]);
+
+		OpenControllerService();
+		OpenEchoService();
+		OpenProxyServices();
+	}
+
+	private void OpenEchoService() throws IOException {
+		EchoService echo_service = new EchoService();
+		echo_service.open(config.getEchoPort());
 		
+		this.services.add(echo_service);
+	}
+
+	private void OpenProxyServices() {
 		
+		Map<String,Target> targets = config.getTargets();
+		for (Entry<String,Target> entry : targets.entrySet()) {
+			try {
+				
+				Target target = entry.getValue();
+				CmpProxyService proxy_service = new CmpProxyService(entry.getKey());
+				proxy_service.setTarget(target);
+				proxy_service.open(target.getProxyPort());
+				
+				services.add(proxy_service);
+			} catch (Exception e) {
+				logger.error("Proxy Service Open Error",e);
+			}
+		}
+	}
+
+	private void OpenControllerService() throws IOException {
+		ControllerService controller_service = new ControllerService();
+		controller_service.open(config.getAdminPort());
+		
+		this.services.add(controller_service);
 	}
 
 	@Override
 	public void start() throws Exception {
-		server.start();
-		controller_service.start();
+		for (AbstractService service : services) {
+			service.start();
+		}
 	}
 
 	@Override
 	public void stop() throws Exception {
-		server.interrupt();
+		for (AbstractService service : services) {
+			service.close();
+		}
+		
 		destroy();
 	}
 
@@ -82,7 +120,7 @@ public class ProxyDaemon implements Daemon {
 	public static void main(String[] args) {
 		if(args == null || args.length == 0) {
 			String[] main_args = new String[3]; 
-        	main_args[0] = "config.path";
+        	main_args[0] = "./conf/config.json";
         	main_args[1] = "logger.console"; // logger.file
         	//main_args[2] = "logback.appenders";
         	start(main_args);
