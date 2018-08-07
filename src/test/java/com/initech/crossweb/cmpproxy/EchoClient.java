@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -20,27 +21,20 @@ public class EchoClient {
 		
 		try {
 			Socket socket = new Socket("127.0.0.1",6200);
+			socket.setSoLinger(true,1000);
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		    PrintWriter out   = new PrintWriter(socket.getOutputStream(),true); 
 			
-			
-			OutputStream output = socket.getOutputStream();
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(output));
-			
-			writer.write("hellow echo server---");
-			writer.flush();
-
-			
-			InputStream input = socket.getInputStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-			
-			String line = "";
-			while( (line = reader.readLine()) != null) {
+			int count = 100;
+			while(count > 0) {
+				
+				out.println("hellow echo server---["+count+"]");
+				String line = in.readLine();
 				System.out.println(line);
+				
+				count--;
 			}
-			
-			writer.close();
-			reader.close();
 			socket.close();
-			
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -24,6 +24,7 @@ abstract public class AbstractService extends Thread{
 	public void open(int port) throws IOException {
 		this.port = port;
 		this.listener = new ServerSocket(this.port);
+		
 		logger.info("{}-{} Listener Open : {}",this.type,this.name,this.listener);
 	}
 	public void close() throws IOException {
