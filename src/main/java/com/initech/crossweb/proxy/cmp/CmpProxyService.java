@@ -23,7 +23,7 @@ public class CmpProxyService extends AbstractService {
 	
 	@Override
 	public void doWork(Socket socket) {
-		execService.execute(new ProxyWorker(socket, target));
+		execService.execute(new ProxyHandler(socket, target));
 	}
 
 

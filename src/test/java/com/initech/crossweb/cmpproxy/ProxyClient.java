@@ -2,27 +2,26 @@ package com.initech.crossweb.cmpproxy;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
 
 import org.junit.Test;
 
-public class EchoClient {
-
+public class ProxyClient {
 	
 	@Test
 	public void call() {
 		
 		try {
-			Socket socket = new Socket("127.0.0.1",6200);
+			Socket socket = new Socket("127.0.0.1",6303);
 			socket.setSoLinger(true,1000);
 			BufferedInputStream in   = new BufferedInputStream(socket.getInputStream());
 			BufferedOutputStream out = new BufferedOutputStream(socket.getOutputStream());
-			int count = 100;
+			int count = 3;
 			while(count > 0) {
 				
 				String out_str = "hellow echo server---["+count+"]";

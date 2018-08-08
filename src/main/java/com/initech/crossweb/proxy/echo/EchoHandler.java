@@ -1,8 +1,12 @@
 package com.initech.crossweb.proxy.echo;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -14,14 +18,14 @@ public class EchoHandler implements Runnable {
 	static final Logger logger = LoggerFactory.getLogger(EchoHandler.class);;
 	
 	private Socket socket;
-	private BufferedReader in;
-    private PrintWriter out;
+	private BufferedInputStream in;
+    private BufferedOutputStream out;
      
 	public EchoHandler(Socket socket) {
 		this.socket = socket;
 		try {
-			this.in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-			this.out = new PrintWriter(this.socket.getOutputStream(),true);
+			this.in = new BufferedInputStream(this.socket.getInputStream());
+			this.out =new BufferedOutputStream(this.socket.getOutputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -31,11 +35,21 @@ public class EchoHandler implements Runnable {
 	public void run() {
 		
 		try {
-			String input ;
-			while( (input = in.readLine()) != null) {
-				logger.debug("Cleint : {}",input);
-				out.println("Echo : " + input);
+			while(true){
+				byte[] buffer = new byte[2048];
+				int read_len = in.read(buffer);
+				if(read_len == -1){
+					break;
+				}
+				
+				logger.debug("Cleint recv [{}]: {}",read_len, new String(buffer,0,read_len));
+					
+				String out_str = "Echo : " + new String(buffer,0,read_len);
+				out.write(out_str.getBytes());
+				out.flush();
+				logger.debug("Cleint send : {}", out_str);
 			}
+			
 		}catch (Exception e) {
 			logger.error("echo : {}",e);
 		}finally {
