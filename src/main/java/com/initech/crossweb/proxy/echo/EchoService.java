@@ -1,8 +1,6 @@
 package com.initech.crossweb.proxy.echo;
 
 import java.net.Socket;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,7 +18,6 @@ public class EchoService extends AbstractService {
 	@Override
 	public void doWork(Socket socket) {
 		
-		BlockingQueue<char[]>  msg_queue = new ArrayBlockingQueue<char[]>(100);
 		
 		execService.execute(new EchoHandler(socket));
 		
