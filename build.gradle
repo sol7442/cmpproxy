@@ -5,7 +5,7 @@ sourceCompatibility = 1.7
 project.ext.baseName   = 'INISAFE'
 project.ext.appendix   = 'Proxy'
 project.version    = '1.0.0'
-project.ext.classifier = 'beta'
+project.ext.classifier = 'alpha'
 
 repositories {
     jcenter()

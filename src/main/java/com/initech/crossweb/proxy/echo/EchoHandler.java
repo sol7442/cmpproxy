@@ -40,9 +40,15 @@ public class EchoHandler implements Runnable {
 				
 				logger.debug("Cleint recv [{}]: {}",read_len, new String(buffer,0,read_len));
 					
-				String out_str = "Echo ("+this.index+"): " + new String(buffer,0,read_len);
+				String out_str ="";
+				out_str = "Echo 1("+this.index+")["+read_len+"]: " + new String(buffer,0,read_len);
 				out.write(out_str.getBytes());
 				out.flush();
+				
+				out_str = "Echo 2("+this.index+")["+read_len+"]: " + new String(buffer,0,read_len);
+				out.write(out_str.getBytes());
+				out.flush();
+				
 				logger.debug("Cleint send : {}", out_str);
 			}
 			

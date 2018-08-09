@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.initech.crossweb.proxy.echo.EchoClient;
 
-public class ProxyClient {
+public class ProxyClientTest {
 	
 	private final String ip = "127.0.0.1";
 	private final int port  = 6303;
@@ -24,15 +24,16 @@ public class ProxyClient {
 	public void call10_10() throws UnknownHostException, IOException {
 		 exec = Executors.newFixedThreadPool(10);
 		 for(int i=0; i<10; i++) {
-			 EchoClient client = new EchoClient(i,10);
+			 EchoClient client = new EchoClient(i,1);
 			 client.connect(this.ip,this.port);
 			 exec.execute(client);
 		 }
 		 try {
-			exec.awaitTermination(1,TimeUnit.HOURS);
+			exec.awaitTermination(60,TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.out.println("Test End-----");
 	}
 	
 	//@Test
