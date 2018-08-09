@@ -2,20 +2,25 @@
   "adminPort": 6100,
   "echoPort": 6200,
   "targets": {
-    "SignKorea": {
+    "YessignCA": {
+      "targetIp": "203.233.91.231",
+      "targetPort": 4512,
+      "proxyPort": 4512
+    },
+    "SignKoreaCA": {
+      "targetIp": "211.175.81.101",
+      "targetPort": 4099,
+      "proxyPort": 4099
+    },
+    "SignGateCA": {
+      "targetIp": "114.108.187.156",
+      "targetPort": 4502,
+      "proxyPort": 4502
+    },
+    "EchoCA": {
       "targetIp": "127.0.0.1",
       "targetPort": 6200,
       "proxyPort": 6303
-    },
-    "YesSign": {
-      "targetIp": "127.0.0.1",
-      "targetPort": 6200,
-      "proxyPort": 6302
-    },
-    "KSign": {
-      "targetIp": "127.0.0.1",
-      "targetPort": 6200,
-      "proxyPort": 6301
     }
     /*
     "KSign": {

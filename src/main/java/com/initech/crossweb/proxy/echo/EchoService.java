@@ -8,7 +8,8 @@ import com.initech.crossweb.proxy.AbstractService;
 
 public class EchoService extends AbstractService {
 	
-	private ExecutorService execService = Executors.newFixedThreadPool(2);
+	private int index = 0;
+	private ExecutorService execService = Executors.newCachedThreadPool();
 	
 	public EchoService() {
 		this.type = "Controller";
@@ -19,8 +20,8 @@ public class EchoService extends AbstractService {
 	public void doWork(Socket socket) {
 		
 		
-		execService.execute(new EchoHandler(socket));
-		
+		execService.execute(new EchoHandler(index, socket));
+		this.index++;
 		//execService.execute(new EchoReader(socket, msg_queue));
 		//execService.execute(new EchoWriter(socket, msg_queue));
 	}

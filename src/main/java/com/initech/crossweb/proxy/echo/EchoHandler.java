@@ -12,11 +12,12 @@ public class EchoHandler implements Runnable {
 
 	static final Logger logger = LoggerFactory.getLogger(EchoHandler.class);;
 	
+	private int index = 0;
 	private Socket socket;
 	private BufferedInputStream in;
     private BufferedOutputStream out;
      
-	public EchoHandler(Socket socket) {
+	public EchoHandler(int index, Socket socket) {
 		this.socket = socket;
 		try {
 			this.in = new BufferedInputStream(this.socket.getInputStream());
@@ -39,7 +40,7 @@ public class EchoHandler implements Runnable {
 				
 				logger.debug("Cleint recv [{}]: {}",read_len, new String(buffer,0,read_len));
 					
-				String out_str = "Echo : " + new String(buffer,0,read_len);
+				String out_str = "Echo ("+this.index+"): " + new String(buffer,0,read_len);
 				out.write(out_str.getBytes());
 				out.flush();
 				logger.debug("Cleint send : {}", out_str);

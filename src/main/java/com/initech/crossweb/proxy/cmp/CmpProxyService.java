@@ -12,6 +12,7 @@ public class CmpProxyService extends AbstractService {
 
 	private ExecutorService execService = Executors.newCachedThreadPool();
 	
+	private int index = 0;
 	private Target target;
 	public CmpProxyService(String name) {
 		this.type = "Proxy";
@@ -23,7 +24,8 @@ public class CmpProxyService extends AbstractService {
 	
 	@Override
 	public void doWork(Socket socket) {
-		execService.execute(new ProxyHandler(socket, target));
+		execService.execute(new ProxyHandler(index, socket, target));
+		this.index++;
 	}
 
 

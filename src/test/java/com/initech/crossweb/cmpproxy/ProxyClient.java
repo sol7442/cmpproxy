@@ -5,12 +5,37 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
 
+import com.initech.crossweb.proxy.echo.EchoClient;
+
 public class ProxyClient {
 	
+	private final String ip = "127.0.0.1";
+	private final int port  = 6303;
+	
+	private ExecutorService exec;
+
 	@Test
+	public void call10_10() throws UnknownHostException, IOException {
+		 exec = Executors.newFixedThreadPool(10);
+		 for(int i=0; i<10; i++) {
+			 EchoClient client = new EchoClient(i,10);
+			 client.connect(this.ip,this.port);
+			 exec.execute(client);
+		 }
+		 try {
+			exec.awaitTermination(1,TimeUnit.HOURS);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//@Test
 	public void call() {
 		
 		try {
@@ -18,7 +43,7 @@ public class ProxyClient {
 			socket.setSoLinger(true,1000);
 			BufferedInputStream in   = new BufferedInputStream(socket.getInputStream());
 			BufferedOutputStream out = new BufferedOutputStream(socket.getOutputStream());
-			int count = 3;
+			int count = 100;
 			while(count > 0) {
 				
 				String out_str = "hellow echo server---["+count+"]";
