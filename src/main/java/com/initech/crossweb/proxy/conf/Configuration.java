@@ -43,12 +43,12 @@ public class Configuration implements Serializable{
 	
 	public static Configuration load(String file_name) throws FileNotFoundException {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-		JsonReader reader = new JsonReader(new FileReader("./conf/config.json"));
+		JsonReader reader = new JsonReader(new FileReader(file_name));
 		return gson.fromJson(reader,Configuration.class);
 	}
 	public void save(String file_name) throws IOException {
 		
-		FileWriter writer = new FileWriter(new File("./conf/config.json"));
+		FileWriter writer = new FileWriter(new File(file_name));
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		gson.toJson(this,writer);
 		writer.flush();

@@ -33,7 +33,7 @@ public class ProxyHandler implements Runnable {
 				int read = in.read(read_buffer);
 				
 				if(read == -1){break;}
-				
+				logger.info("Proxy Handler read {} : {} - {}",read, this.read_socket, this.wirte_socket);
 				out.write(read_buffer,0,read);
 				out.flush();
 			}

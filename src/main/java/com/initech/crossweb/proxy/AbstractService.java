@@ -43,7 +43,7 @@ abstract public class AbstractService extends Thread{
 			try {
 				Socket socket = this.listener.accept();
 				
-				logger.debug("socket accepted : {}", socket);
+				logger.info("socket accepted : {}", socket);
 				
 				doWork(socket);
 				

@@ -16,20 +16,21 @@ import com.initech.crossweb.proxy.echo.EchoClient;
 public class ProxyClientTest {
 	
 	private final String ip = "127.0.0.1";
+	//private final String ip = "182.162.143.19";
 	private final int port  = 6303;
 	
 	private ExecutorService exec;
 
 	@Test
 	public void call10_10() throws UnknownHostException, IOException {
-		 exec = Executors.newFixedThreadPool(10);
+		 exec = Executors.newCachedThreadPool();
 		 for(int i=0; i<10; i++) {
 			 EchoClient client = new EchoClient(i,1);
 			 client.connect(this.ip,this.port);
 			 exec.execute(client);
 		 }
 		 try {
-			exec.awaitTermination(60,TimeUnit.SECONDS);
+			exec.awaitTermination(20,TimeUnit.SECONDS);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

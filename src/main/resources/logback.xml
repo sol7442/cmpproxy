@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration debug="true"> 
+<configuration debug="false" scan="fasle" scanPeriod="3000 seconds"> 
 
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>./log/cmp_proxy.log</file>
+    <file>${log.path}/proxy.log</file>
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>cmp_proxy.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <fileNamePattern>proxy.%d{yyyy-MM-dd}.log</fileNamePattern>
       <maxHistory>30</maxHistory>
       <totalSizeCap>3GB</totalSizeCap>
     </rollingPolicy>
@@ -19,7 +19,7 @@
       </layout>
   </appender>
     
-  <root level="debug">
+  <root level="${log.mode}">
   	<if condition='property("logback.appenders").contains("CONSOLE")'>
   		<then>
   	  		<appender-ref ref="CONSOLE" />

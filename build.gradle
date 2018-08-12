@@ -1,11 +1,12 @@
 apply plugin: 'java-library'
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.6
+targetCompatibility = 1.6
 
-project.ext.baseName   = 'INISAFE'
-project.ext.appendix   = 'Proxy'
-project.version    = '1.0.0'
-project.ext.classifier = 'alpha'
+project.ext.baseName   	= 'INISAFE'
+project.ext.appendix   	= 'Proxy'
+project.version    		= '1.0.0'
+project.ext.classifier 	= '' //alpha,beta
 
 repositories {
     jcenter()
