@@ -3,6 +3,7 @@ package com.initech.crossweb.proxy;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,10 +15,12 @@ abstract public class AbstractService extends Thread{
 	
 	protected String type;
 	protected String name;
+	protected ExecutorService execService;
 	
 	private int port;
     private ServerSocket listener;
-     
+    
+    
 
 	
 	public void open(int port) throws IOException {
@@ -32,8 +35,10 @@ abstract public class AbstractService extends Thread{
 		}
 	}
 	public void close() throws IOException {
-		this.listener.close();
+		this.execService.shutdownNow();
 		this.interrupt();
+		this.listener.close();
+		logger.info("{}-{} Listener close : {}",this.type,this.name,this.listener);
 	}
 	
 	public void run() {
@@ -43,14 +48,15 @@ abstract public class AbstractService extends Thread{
 			try {
 				Socket socket = this.listener.accept();
 				
-				logger.info("socket accepted : {}", socket);
+				logger.info("socket accepted {} : {}", this.name, socket);
 				
 				doWork(socket);
 				
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.info("Service Stoped {} : {}",this.name , e.getMessage());
 			}
 		}
+		logger.info("Service Thread end : {}", this.name);
 	}
 	abstract public void doWork(Socket socket);
 }

@@ -18,12 +18,12 @@ public class CmpProxyService extends AbstractService {
 	static final Logger logger = LoggerFactory.getLogger(CmpProxyService.class);;
 
 	
-	private ExecutorService execService = Executors.newCachedThreadPool();
 	
 	private Target target;
 	public CmpProxyService(String name) {
 		this.type = "Proxy";
 		this.name = name;
+		this.execService = Executors.newCachedThreadPool();
 	}
 	public void setTarget(Target target) {
 		this.target      = target;
@@ -32,13 +32,11 @@ public class CmpProxyService extends AbstractService {
 	@Override
 	public void doWork(Socket source_socket) {
 		try {
-			/**[alpa version]*********/
+			
 			Socket target_socket = connectTarget();
+			
 			execService.execute(new ProxyHandler(source_socket, target_socket));
 			execService.execute(new ProxyHandler(target_socket,source_socket));
-			
-			/**[beta version]********************/
-			//execService.execute(new ProxyHandler2(0,source_socket,this.target));
 			
 		} catch (Exception e) {
 			logger.error("Proxy Work Error {}",e);

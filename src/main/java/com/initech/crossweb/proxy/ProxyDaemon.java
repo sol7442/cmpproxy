@@ -44,21 +44,21 @@ public class ProxyDaemon implements Daemon {
 		OpenProxyServices();
 	}
 
-	private void self_test() throws UnknownHostException, IOException {
-		System.out.println("Self Test Start-----");
-		ExecutorService exec = Executors.newCachedThreadPool();
-		 for(int i=0; i<10; i++) {
-			 EchoClient client = new EchoClient(i,1);
-			 client.connect("127.0.0.1",this.config.getTargets().get("EchoCA").getProxyPort());
-			 exec.execute(client);
-		 }
-		 try {
-			exec.awaitTermination(30,TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("Self Test End-----");
-	}
+//	private void self_test() throws UnknownHostException, IOException {
+//		System.out.println("Self Test Start-----");
+//		ExecutorService exec = Executors.newCachedThreadPool();
+//		 for(int i=0; i<10; i++) {
+//			 EchoClient client = new EchoClient(i,1);
+//			 client.connect("127.0.0.1",this.config.getTargets().get("EchoCA").getProxyPort());
+//			 exec.execute(client);
+//		 }
+//		 try {
+//			exec.awaitTermination(30,TimeUnit.SECONDS);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		System.out.println("Self Test End-----");
+//	}
 
 	private void OpenEchoService() throws IOException {
 		EchoService echo_service = new EchoService();
@@ -86,7 +86,7 @@ public class ProxyDaemon implements Daemon {
 	}
 
 	private void OpenControllerService() throws IOException {
-		ControllerService controller_service = new ControllerService();
+		ControllerService controller_service = new ControllerService(this.services);
 		controller_service.open(config.getAdminPort());
 		
 		this.services.add(controller_service);
@@ -98,11 +98,10 @@ public class ProxyDaemon implements Daemon {
 			service.start();
 		}
 		
-		String slef_test = System.getProperty("self.test");
-		if( "true".equals(slef_test)){
-			self_test();
-		}
-		
+//		String slef_test = System.getProperty("self.test");
+//		if( "true".equals(slef_test)){
+//			self_test();
+//		}
 	}
 
 	@Override

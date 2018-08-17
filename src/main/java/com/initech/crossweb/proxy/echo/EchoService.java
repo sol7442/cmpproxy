@@ -9,11 +9,11 @@ import com.initech.crossweb.proxy.AbstractService;
 public class EchoService extends AbstractService {
 	
 	private int index = 0;
-	private ExecutorService execService = Executors.newCachedThreadPool();
 	
 	public EchoService() {
 		this.type = "Controller";
 		this.name = "Echo";		
+		this.execService = Executors.newCachedThreadPool();
 	}
 	
 	@Override
