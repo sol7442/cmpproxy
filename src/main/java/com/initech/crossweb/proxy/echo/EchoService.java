@@ -1,7 +1,6 @@
 package com.initech.crossweb.proxy.echo;
 
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import com.initech.crossweb.proxy.AbstractService;
@@ -22,7 +21,5 @@ public class EchoService extends AbstractService {
 		
 		execService.execute(new EchoHandler(index, socket));
 		this.index++;
-		//execService.execute(new EchoReader(socket, msg_queue));
-		//execService.execute(new EchoWriter(socket, msg_queue));
 	}
 }

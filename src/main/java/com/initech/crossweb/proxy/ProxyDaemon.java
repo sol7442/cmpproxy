@@ -1,13 +1,9 @@
 package com.initech.crossweb.proxy;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.Set;
 
 import org.apache.commons.daemon.Daemon;
@@ -21,7 +17,6 @@ import com.initech.crossweb.proxy.cmp.CmpProxyService;
 import com.initech.crossweb.proxy.conf.Configuration;
 import com.initech.crossweb.proxy.conf.Target;
 import com.initech.crossweb.proxy.control.ControllerService;
-import com.initech.crossweb.proxy.echo.EchoClient;
 import com.initech.crossweb.proxy.echo.EchoService;
 
 public class ProxyDaemon implements Daemon {
@@ -34,7 +29,7 @@ public class ProxyDaemon implements Daemon {
     
 	@Override
 	public void init(DaemonContext context) throws DaemonInitException, Exception {
-		String[] args = context.getArguments();
+		//String[] args = context.getArguments();
 		
 		String config_file = System.getProperty("conf.path") + "/config.json";
 		this.config = Configuration.load(config_file);
@@ -43,22 +38,6 @@ public class ProxyDaemon implements Daemon {
 		OpenEchoService();
 		OpenProxyServices();
 	}
-
-//	private void self_test() throws UnknownHostException, IOException {
-//		System.out.println("Self Test Start-----");
-//		ExecutorService exec = Executors.newCachedThreadPool();
-//		 for(int i=0; i<10; i++) {
-//			 EchoClient client = new EchoClient(i,1);
-//			 client.connect("127.0.0.1",this.config.getTargets().get("EchoCA").getProxyPort());
-//			 exec.execute(client);
-//		 }
-//		 try {
-//			exec.awaitTermination(30,TimeUnit.SECONDS);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		System.out.println("Self Test End-----");
-//	}
 
 	private void OpenEchoService() throws IOException {
 		EchoService echo_service = new EchoService();

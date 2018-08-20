@@ -1,6 +1,7 @@
 {
   "adminPort": 6100,
   "echoPort": 6200,
+  "RunScript":"./run/inisafe_proxy.bat",
   "targets": {
     "YessignCA": {
       "targetIp": "203.233.91.231",

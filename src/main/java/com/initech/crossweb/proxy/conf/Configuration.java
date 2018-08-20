@@ -16,8 +16,14 @@ import com.google.gson.stream.JsonReader;
 public class Configuration implements Serializable{
 	private static final long serialVersionUID = 5736060471229351415L;
 
+	
+
 	private int adminPort;
 	private int echoPort;
+	
+	private String RunScript;
+	
+	
 	private Map<String,Target> targets = new HashMap<String,Target>();
 	public int getAdminPort() {
 		return adminPort;
@@ -57,6 +63,12 @@ public class Configuration implements Serializable{
 	public String toString() {
 		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 		return gson.toJson(this);
+	}
+	public void setRunScript(String script) {
+		this.RunScript = script;
+	}
+	public String getRunScript() {
+		return this.RunScript;
 	}
 
 }
